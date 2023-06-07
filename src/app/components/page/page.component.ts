@@ -10,7 +10,9 @@ export class PageComponent implements OnInit {
   cadenaInicial:string[] = [];
 
   valueSearchH:string = "";
+  valueSearchV:string = "";
   countH:number = 0;
+  countV:number = 0;
   coincidencias:number = 0;
   isValidate:boolean = false;
   isMutantDna:boolean = false;
@@ -58,6 +60,24 @@ export class PageComponent implements OnInit {
 
             this.valueSearchH = element[j];
             /************ FIN VALIDACIÓN BUSQUEDA HORIZONTAL ************/
+
+            /************ VALIDACIÓN PARA BUSQUEDA VERTICAL ************/
+            if(this.valueSearchV == cadena[j][i]){
+              //console.log(`Caracter ${cadena[j][i]}`);
+              this.countV++;
+            }
+            else{
+              this.countV = 0;
+            }
+
+            if(this.countV > 2){
+              console.log(`-->Vertical Tienes una coincidencia que finaliza en la cadena ${cadena[j]} con el caracter ${cadena[j][i]} en la posición ${i}`);
+              this.coincidencias++;
+              this.countV = 0;
+            }
+
+            this.valueSearchV = cadena[j][i];
+            /************ FIN VALIDACIÓN BUSQUEDA VERTICAL ************/
 
           }
           else{
