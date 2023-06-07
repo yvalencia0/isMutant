@@ -11,9 +11,11 @@ export class PageComponent implements OnInit {
 
   valueSearchH:string = "";
   valueSearchV:string = "";
+  valueSearchO:string = "";
   countH:number = 0;
   countV:number = 0;
-  coincidencias:number = 0;
+  countO:number = 0;
+  match:number = 0;
   isValidate:boolean = false;
   isMutantDna:boolean = false;
 
@@ -25,7 +27,7 @@ export class PageComponent implements OnInit {
   isMutant(x:string[]):boolean{
 
     this.isValidate = false;
-    this.coincidencias = 0;
+    this.match = 0;
 
     if(x.length > 0){
       this.isValidate = true;
@@ -54,7 +56,7 @@ export class PageComponent implements OnInit {
 
             if(this.countH > 2){
               console.log(`-->Horizontal Tienes una coincidencia en la cadena ${element} con el caracter ${element[j]}`);
-              this.coincidencias++;
+              this.match++;
               this.countH = 0;
             }
 
@@ -63,7 +65,6 @@ export class PageComponent implements OnInit {
 
             /************ VALIDACIÓN PARA BUSQUEDA VERTICAL ************/
             if(this.valueSearchV == cadena[j][i]){
-              //console.log(`Caracter ${cadena[j][i]}`);
               this.countV++;
             }
             else{
@@ -72,12 +73,34 @@ export class PageComponent implements OnInit {
 
             if(this.countV > 2){
               console.log(`-->Vertical Tienes una coincidencia que finaliza en la cadena ${cadena[j]} con el caracter ${cadena[j][i]} en la posición ${i}`);
-              this.coincidencias++;
+              this.match++;
               this.countV = 0;
             }
 
             this.valueSearchV = cadena[j][i];
             /************ FIN VALIDACIÓN BUSQUEDA VERTICAL ************/
+
+            /************ VALIDACIÓN PARA BUSQUEDA OBLICUA ************/
+            this.valueSearchO = cadena[i][j];
+            
+            if(this.countO > 2){
+              console.log(`-->Oblicua Tienes una coincidencia que empieza en la cadena ${cadena[i]} con el caracter ${cadena[i][j]} en la posición ${j}`);
+              this.match++;
+              this.countO = 0;
+            }
+            if(i <= cadena.length - 4 && j <= cadena[i].length - 4 ){
+
+              for (let y = 1; y <= 3; y++) {
+
+                if(this.valueSearchO == cadena[i+y][j+y]){
+                  this.countO++;
+                }
+                else{
+                  this.countO = 0;
+                }
+              }
+            }
+            /************ FIN VALIDACIÓN BUSQUEDA OBLICUA ************/
 
           }
           else{
@@ -89,8 +112,8 @@ export class PageComponent implements OnInit {
             
           }
         }
-      console.log(`Coincidencias ${this.coincidencias}`);
-      if(this.coincidencias > 1){
+      console.log(`Coincidencias ${this.match}`);
+      if(this.match > 1){
         this.isMutantDna = true
         return this.isMutantDna;
       }
